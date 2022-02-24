@@ -1,5 +1,5 @@
 <h3>Create a new ticket</h3>
-<form class="ticket-form" [formGroup]="ticketForm">
+<form class="ticket-form" [formGroup]="ticketForm" (ticketIsArchived)="archiveTicket($event)">
   <label for="title">
     Title <br>
     <input class="input-custom" type="text" id="title" [formControlName]="'title'">
@@ -10,8 +10,21 @@
     <input class="input-custom" type="text" id="description" [formControlName]="'description'">
   </label>
   <br>
+  <label for="student">
+    Student <br>
+    <select class="input-custom" name="sel-student" [formControlName]="'student'" (change)="onStudentChange($event.target.options.selectedIndex)">
+      <option *ngFor="let currentStudent of STUDENT_LIST" [value]="currentStudent">{{ currentStudent.id }}-{{ currentStudent.lastName }}-{{ currentStudent.firstName }}</option>
+    </select>
+  </label>
+  <br>
+  <label for="major">
+    Major <br>
+    <select class="input-custom" name="sel-major" [formControlName]="'major'">
+      <option *ngFor="let currentMajor of MAJOR_LIST" [value]="currentMajor">{{ currentMajor }}</option>
+    </select>
+  </label>
+  <br>
   <button type="submit" class="btn-custom" (click)="addTicket()">Create</button>
 </form>
-
 <!-- Uncomment below to see your form structure and how it changes-->
 <!--<br><br>{{ticketForm.getRawValue() | json}}-->

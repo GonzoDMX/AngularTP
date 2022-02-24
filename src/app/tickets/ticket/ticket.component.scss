@@ -2,8 +2,27 @@
 
 .ticket {
   width: 100%;
+  text-align: justify;
+  background-color: #FFE293;
 }
 
 .ticket:hover {
   cursor: pointer;
+}
+
+button {
+  background-color: transparent;
+  color: #000000;
+  border: 0.16em solid #000000;
+  font-size: 1em;
+  border-radius: 5px;
+}
+
+button:hover {
+  color: #FF0000;
+  background-color: #FFFFFF;
+}
+
+.my-controls {
+  margin-top: 10px;
 }

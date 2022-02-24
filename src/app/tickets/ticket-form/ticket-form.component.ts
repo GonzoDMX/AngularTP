@@ -1,7 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { TicketService } from '../../../services/ticket/ticket.service';
+import { StudentService } from '../../../services/student/student.service';
 import { Ticket } from '../../../models/ticket';
+import { Student } from '../../../models/student';
+import { STUDENTS_MOCKED } from '../../../mocks/students.mock';
+import { BehaviorSubject } from 'rxjs/index';
 
 @Component({
   selector: 'app-ticket-form',
@@ -18,11 +22,24 @@ export class TicketFormComponent implements OnInit {
    */
   public ticketForm: FormGroup;
 
-  constructor(public formBuilder: FormBuilder, public ticketService: TicketService) {
+  public MAJOR_LIST: string[] = ['Math', 'Science', 'History', 'Sports'];
+
+  public STUDENT_LIST: Student[] = STUDENTS_MOCKED;
+
+  private studentList: Student[];
+
+  private selectedStudent: Student = this.STUDENT_LIST[0];
+
+  constructor(public formBuilder: FormBuilder,
+              public ticketService: TicketService,
+              public studentService: StudentService) {
+    this.studentService.students$.subscribe((students) => this.studentList = students);
     // Form creation
     this.ticketForm = this.formBuilder.group({
       title: [''],
-      description: ['']
+      description: [''],
+      student: [''],
+      major: ['Math']
     });
     // You can also add validators to your inputs such as required, maxlength or even create your own validator!
     // More information: https://angular.io/guide/reactive-forms#simple-form-validation
@@ -32,10 +49,17 @@ export class TicketFormComponent implements OnInit {
   ngOnInit() {
   }
 
+  onStudentChange(studentIndex: number) {
+    console.log("Change student: ", studentIndex);
+    this.selectedStudent = this.STUDENT_LIST[studentIndex];
+  }
+
   addTicket() {
     const ticketToCreate: Ticket = this.ticketForm.getRawValue() as Ticket;
+    console.log('New ticket: ', ticketToCreate.student.id);
     ticketToCreate.date = new Date();
-    ticketToCreate.author = 'Me';
+    ticketToCreate.student = this.selectedStudent;
+    ticketToCreate.archived = false;
     this.ticketService.addTicket(ticketToCreate);
   }
 

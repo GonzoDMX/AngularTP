@@ -7,6 +7,9 @@ import { TicketService } from '../services/ticket/ticket.service';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HeaderComponent } from './header/header.component';
 
+import { HttpClientModule } from '@angular/common/http';
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -17,7 +20,8 @@ import { HeaderComponent } from './header/header.component';
   ],
   imports: [
     BrowserModule,
-    ReactiveFormsModule // Import all dependencies
+    ReactiveFormsModule, // Import all dependencies
+    HttpClientModule
   ],
   providers: [TicketService], // All the services need to be provided
   bootstrap: [AppComponent]
